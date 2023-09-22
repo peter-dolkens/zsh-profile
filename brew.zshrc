@@ -24,6 +24,8 @@ brew_binaries=(
     "/opt/homebrew/bin/yq:yq"
     "/usr/local/bin/pwsh:powershell"
     "/opt/homebrew/bin/octo:octopusdeploy/taps/octopuscli"
+    "/opt/homebrew/bin/fx:fx"
+    "/opt/homebrew/bin/mongosh:mongosh"
 )
 
 fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
