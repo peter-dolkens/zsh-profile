@@ -1,4 +1,5 @@
 
+alias cf=flarectl
 alias k=kubectl
 alias kns=kubens
 alias ktx=kubectx
@@ -18,3 +19,5 @@ alias cls=clear
 alias stellate="npx stellate@next"
 
 alias ptop=asitop
+
+alias krp="k get pod -o json | jq '.items[] | select ( .status.containerStatuses[].restartCount > 0 ) | .metadata.name' -r | xargs -I {} kubectl delete pod {}"
