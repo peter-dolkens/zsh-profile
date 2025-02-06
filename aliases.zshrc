@@ -3,6 +3,8 @@ alias k=kubectl
 alias kns=kubens
 alias ktx=kubectx
 
+alias ksa=search_kube_all
+
 alias kgs=get_kube_secrets
 alias kgc=get_kube_configmaps
 alias kgd=get_kube_deployment
@@ -18,3 +20,7 @@ alias cls=clear
 alias stellate="npx stellate@next"
 
 alias ptop=asitop
+
+start () {
+  open /Applications/$1.app
+}

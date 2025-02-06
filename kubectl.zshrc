@@ -115,3 +115,43 @@ function get_kube_nested() {
 
   to_nested_structure(.)' -c | jq $@
 }
+
+
+# Search for a value in configmaps and secrets
+function search_kube_all() {
+  local search_value=$1
+  shift
+
+  kubectl get secret,configmap -A -o json | jq --arg search_value "$search_value" '[ 
+  .items[] 
+  | select(.data != null) 
+  | .kind as $kind
+  | {
+      kind: .kind,
+      name: .metadata.labels["Octopus.Kubernetes.DeploymentName"],
+      namespace: .metadata.namespace,
+      project: .metadata.labels["Octopus.Project.Id"],
+      link: ("https://clubspark.octopus.app/app#Spaces-1/projects/" + (.metadata.labels["Octopus.Project.Id"] // "")),
+      deployment: .metadata.labels["Octopus.Deployment.Id"],
+      matches: (
+        .data 
+        | to_entries 
+        | map({
+            name: .key,
+            value: (
+              if $kind == "Secret" then 
+                .value | @base64d 
+              else 
+                .value 
+              end
+            )
+          }) 
+        | map(select(.value | contains($search_value))) as $matching_keys
+        | if $matching_keys | length > 0 then
+            $matching_keys
+          else empty
+        end
+      )
+    }
+]' 
+}

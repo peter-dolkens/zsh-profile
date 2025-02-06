@@ -12,6 +12,7 @@ if ! grep -Fxq 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zprofile; then
 fi
 
 brew_binaries=(
+    "/opt/homebrew/bin/docker:docker"
     "/opt/homebrew/bin/az:azure-cli"
     "/opt/homebrew/bin/hx:helix"
     "/opt/homebrew/bin/helm:helm"
@@ -21,9 +22,15 @@ brew_binaries=(
     "/opt/homebrew/bin/kubetail:johanhaleby/kubetail/kubetail"
     "/opt/homebrew/bin/kubelogin:Azure/kubelogin/kubelogin"
     "/opt/homebrew/bin/watch:watch"
+    "/opt/homebrew/bin/node:node"
+    "/opt/homebrew/bin/npm:npm"
     "/opt/homebrew/bin/yq:yq"
     "/usr/local/bin/pwsh:powershell"
     "/opt/homebrew/bin/octo:octopusdeploy/taps/octopuscli"
+    "/opt/homebrew/bin/kubeshark:kubeshark/kubeshark/kubeshark"
+    "/opt/homebrew/bin/sig:ynqa/tap/sigrs"
+    "/opt/homebrew/bin/fx:fx"
+    "/opt/homebrew/bin/mongosh:mongosh"
 )
 
 fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
