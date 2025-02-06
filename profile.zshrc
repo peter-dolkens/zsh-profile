@@ -10,4 +10,6 @@ source ~/.zsh-profile/aliases.zshrc
 ZSH_THEME_TERM_TAB_TITLE_IDLE="[%M] %~"
 ZSH_THEME_TERM_TITLE_IDLE="[%n@%M] %~"
 
+export CF_API_TOKEN="insert-token-here"
+
 autoload -Uz compinit && compinit

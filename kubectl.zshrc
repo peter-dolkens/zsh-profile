@@ -43,7 +43,7 @@ function get_kube_configmaps() {
     } | {
       kube_name: .metadata.name,
       kube_namespace: .metadata.namespace,
-      kube_type: \"secret\"
+      kube_type: \"config\"
     } + .data[] + .metadata.labels $deployment_name_filter" -c |
   jq -s $@
 }
@@ -112,6 +112,7 @@ function get_kube_nested() {
           $entry.value
         end)
       );
+
 
   to_nested_structure(.)' -c | jq $@
 }
