@@ -156,3 +156,6 @@ function search_kube_all() {
     }
 ]' 
 }
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+

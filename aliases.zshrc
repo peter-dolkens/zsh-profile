@@ -24,6 +24,33 @@ alias ptop=asitop
 
 alias krp="k get pod -o json | jq '.items[] | select ( .status.containerStatuses[].restartCount > 0 ) | .metadata.name' -r | xargs -I {} kubectl delete pod {}"
 
+watch() {
+  local cmd
+  cmd=$(printf "%q " "$@")
+  command watch "zsh -i -c $cmd"
+}
+
+ktop () {
+  kubectl get pods -o json | jq --argjson top "$(kubectl top pods --no-headers | awk '{print "{\"pod\":\""$1"\",\"cpu\":\""$2"\",\"memory\":\""$3"\"}"}' | jq -s .)" -r '
+  ["POD", "CONTAINER", "CPU_USAGE", "CPU_REQUEST", "CPU_LIMIT", "MEM_USAGE", "MEM_REQUEST", "MEM_LIMIT"],
+  ["----", "---------", "---------", "---------", "-----------", "----------", "---------", "---------"],
+  (
+    .items[] |
+    .metadata.name as $pod_name |
+    .spec.containers?[]? |
+    [
+      $pod_name,
+      .name,
+      ($top[] | select(.pod == $pod_name) | .cpu // "N/A"),
+      (.resources.requests.cpu // "0"),
+      (.resources.limits.cpu // "0"),
+      ($top[] | select(.pod == $pod_name) | .memory // "N/A"),
+      (.resources.requests.memory // "0"),
+      (.resources.limits.memory // "0")
+    ]
+  ) | @tsv' | column -t
+}
+
 start () {
   open /Applications/$1.app
 }
