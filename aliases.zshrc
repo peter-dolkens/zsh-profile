@@ -27,8 +27,14 @@ alias krp="k get pod -o json | jq '.items[] | select ( .status.containerStatuses
 watch() {
   local cmd
   cmd=$(printf "%q " "$@")
-  command watch "zsh -i -c $cmd"
+  command watch "~/.zsh-profile/watch-wrapper.sh $cmd"
 }
+
+# watch() {
+#   local cmd
+#   cmd=$(printf "%q " "$@")
+#   command watch "zsh -i -c `$cmd`"
+# }
 
 ktop () {
   kubectl get pods -o json | jq --argjson top "$(kubectl top pods --no-headers | awk '{print "{\"pod\":\""$1"\",\"cpu\":\""$2"\",\"memory\":\""$3"\"}"}' | jq -s .)" -r '
