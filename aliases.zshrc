@@ -13,6 +13,10 @@ alias kgd=get_kube_deployment
 alias kga=get_kube_all
 alias kgj=get_kube_json
 alias kgn=get_kube_nested
+
+alias ksr=~/.zsh-profile/aliases/kube_secret_replace.sh
+alias ksrd=~/.zsh-profile/aliases/kube_secret_replace_direct.sh
+source ~/.zsh-profile/aliases/kube_find_replace.sh
  
 alias ls="ls -laG"
 alias cs=csharprepl
