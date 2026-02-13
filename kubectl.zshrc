@@ -1,4 +1,19 @@
 
+# List all deployments in a namespace, and their corresponding Octopus deployment
+function get_octopus_deployments() {
+
+  kubectl get deployments -o json \
+  | jq -r '.items[]
+  | select(.metadata.labels["Octopus.Project.Id"] != null)
+  | [
+      .metadata.name,
+      "https://clubspark.octopus.app/app#Spaces-1/projects/"
+      + .metadata.labels["Octopus.Project.Id"]
+    ]
+  | @tsv' \
+  | column -t
+
+}
 
 # Get Kubernetes secrets and decode base64 values, apply additional jq query if provided
 function get_kube_secrets() {

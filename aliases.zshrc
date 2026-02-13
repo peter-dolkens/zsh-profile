@@ -9,6 +9,7 @@ alias ksa=search_kube_all
 alias kgs=get_kube_secrets
 alias kgc=get_kube_configmaps
 alias kgd=get_kube_deployment
+alias kgo=get_octopus_deployments
 
 alias kga=get_kube_all
 alias kgj=get_kube_json
