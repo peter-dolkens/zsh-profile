@@ -1,6 +1,10 @@
 
+# Native Claude Code installer lives in ~/.local/bin
+export PATH="$HOME/.local/bin:$PATH"
+
 source ~/.zsh-profile/utils.zshrc
 source ~/.zsh-profile/brew.zshrc
+source ~/.zsh-profile/herdr.zshrc
 source ~/.zsh-profile/dotnet.zshrc
 source ~/.zsh-profile/python.zshrc
 source ~/.zsh-profile/kubectl.zshrc
