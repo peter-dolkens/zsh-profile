@@ -34,7 +34,6 @@ brew_binaries=(
     "sig:ynqa/tap/sigrs"
     "fx:fx"
     "mongosh:mongosh"
-    "herdr:herdr"
 )
 
 fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
