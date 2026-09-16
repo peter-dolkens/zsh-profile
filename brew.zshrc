@@ -25,7 +25,7 @@ brew_binaries=(
     "/opt/homebrew/bin/node:node"
     "/opt/homebrew/bin/npm:npm"
     "/opt/homebrew/bin/yq:yq"
-    "/usr/local/bin/pwsh:powershell"
+    "/opt/homebrew/bin/pwsh:powershell"
     "/opt/homebrew/bin/octo:octopusdeploy/taps/octopuscli"
     "/opt/homebrew/bin/kubeshark:kubeshark/kubeshark/kubeshark"
     "/opt/homebrew/bin/sig:ynqa/tap/sigrs"
@@ -35,20 +35,21 @@ brew_binaries=(
 
 fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
 
-# Create a temporary file in macOS's temporary directory
-last_brew_list_file=$(mktemp -t brew_list)
+# Cache the formula list on disk so `brew list` only runs once a day
+last_brew_list_file=~/.cache/brew_list
+mkdir -p ~/.cache
 
 for i in "${brew_binaries[@]}"; do
     bin="${i%%:*}"
     pkg="${i##*:}"
     if [[ ! -f $bin ]]; then
         brew install $pkg
-        rm $last_brew_list_file
+        rm -f $last_brew_list_file
     fi
 done
 
-# If file doesn't exist or it's older than a day, run `brew list --formula`
-if [[ ! -f $last_brew_list_file ]] || [[ $(find $last_brew_list_file -mtime +1 -print) ]]; then
+# If the cache doesn't exist or is older than 24 hours, refresh it
+if [[ ! -f $last_brew_list_file ]] || [[ -n $(find $last_brew_list_file -mmin +1440 -print) ]]; then
     brew list --formula > $last_brew_list_file
 fi
 

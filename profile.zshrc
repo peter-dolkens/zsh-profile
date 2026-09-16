@@ -12,4 +12,3 @@ ZSH_THEME_TERM_TITLE_IDLE="[%n@%M] %~"
 
 export CF_API_TOKEN="insert-token-here"
 
-autoload -Uz compinit && compinit
