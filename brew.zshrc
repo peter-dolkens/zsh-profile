@@ -11,27 +11,30 @@ if ! grep -Fxq 'eval "$(/opt/homebrew/bin/brew shellenv)"' ~/.zprofile; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+# Format is "command:package". Detection is by command name on $PATH
+# (via `command -v`), not a hardcoded path, so brew prefix / Cellar version
+# / cask-vs-formula changes can't trigger phantom reinstalls.
 brew_binaries=(
-    "/opt/homebrew/bin/docker:docker"
-    "/opt/homebrew/bin/az:azure-cli"
-    "/opt/homebrew/bin/hx:helix"
-    "/opt/homebrew/bin/helm:helm"
-    "/opt/homebrew/bin/jq:jq"
-    "/opt/homebrew/bin/kubectl:kubernetes-cli"
-    "/opt/homebrew/bin/kubectx:kubectx"
-    "/opt/homebrew/bin/kubetail:johanhaleby/kubetail/kubetail"
-    "/opt/homebrew/bin/kubelogin:Azure/kubelogin/kubelogin"
-    "/opt/homebrew/bin/watch:watch"
-    "/opt/homebrew/bin/node:node"
-    "/opt/homebrew/bin/npm:npm"
-    "/opt/homebrew/bin/yq:yq"
-    "/opt/homebrew/bin/pwsh:powershell"
-    "/opt/homebrew/bin/octo:octopusdeploy/taps/octopuscli"
-    "/opt/homebrew/bin/kubeshark:kubeshark/kubeshark/kubeshark"
-    "/opt/homebrew/bin/sig:ynqa/tap/sigrs"
-    "/opt/homebrew/bin/fx:fx"
-    "/opt/homebrew/bin/mongosh:mongosh"
-    "/opt/homebrew/bin/herdr:herdr"
+    "docker:docker"
+    "az:azure-cli"
+    "hx:helix"
+    "helm:helm"
+    "jq:jq"
+    "kubectl:kubernetes-cli"
+    "kubectx:kubectx"
+    "kubetail:johanhaleby/kubetail/kubetail"
+    "kubelogin:Azure/kubelogin/kubelogin"
+    "watch:watch"
+    "node:node"
+    "npm:npm"
+    "yq:yq"
+    "pwsh:powershell"
+    "octo:octopusdeploy/taps/octopuscli"
+    "kubeshark:kubeshark/kubeshark/kubeshark"
+    "sig:ynqa/tap/sigrs"
+    "fx:fx"
+    "mongosh:mongosh"
+    "herdr:herdr"
 )
 
 fpath=($fpath $(brew --prefix)/share/zsh/site-functions)
@@ -41,9 +44,9 @@ last_brew_list_file=~/.cache/brew_list
 mkdir -p ~/.cache
 
 for i in "${brew_binaries[@]}"; do
-    bin="${i%%:*}"
+    cmd="${i%%:*}"
     pkg="${i##*:}"
-    if [[ ! -f $bin ]]; then
+    if ! command -v "$cmd" >/dev/null 2>&1; then
         brew install $pkg
         rm -f $last_brew_list_file
     fi
