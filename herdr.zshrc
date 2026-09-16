@@ -60,3 +60,11 @@ PLIST
 
     unset herdr_label herdr_plist herdr_wrapper herdr_log herdr_desired
 fi
+
+# Let herdr detect Claude Code sessions (writes a SessionStart hook into
+# ~/.claude/settings.json). One-time per machine.
+if command -v herdr >/dev/null 2>&1 && command -v claude >/dev/null 2>&1 \
+    && [[ ! -x "$HOME/.claude/hooks/herdr-agent-state.sh" ]]; then
+    echo "Installing herdr Claude Code integration"
+    herdr integration install claude
+fi
